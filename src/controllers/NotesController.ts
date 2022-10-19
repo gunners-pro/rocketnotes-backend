@@ -65,6 +65,44 @@ class NotesController {
 
     return response.json();
   }
+
+  async index(request: Request, response: Response) {
+    const { user_id, title, tags } = request.query;
+    let notes;
+
+    if (tags) {
+      const filterTags = String(tags)
+        .split(',')
+        .map(tag => tag.trim());
+
+      notes = await database('tags')
+        .select(['notes.id', 'notes.title', 'notes.user_id'])
+        .where('notes.user_id', '=', Number(user_id))
+        .whereLike('notes.title', `%${title}%`)
+        .whereIn('name', filterTags)
+        .innerJoin('notes', 'notes.id', 'tags.note_id')
+        .orderBy('notes.title');
+    } else {
+      notes = await database<Note>('notes')
+        .where({
+          user_id: Number(user_id),
+        })
+        .whereLike('title', `%${title}%`)
+        .orderBy('title');
+    }
+
+    const userTags = await database('tags').where({ user_id });
+    const notesWithTags = notes.map(note => {
+      const noteTags = userTags.filter(tag => tag.note_id === note.id);
+
+      return {
+        ...note,
+        tags: noteTags,
+      };
+    });
+
+    return response.json(notesWithTags);
+  }
 }
 
 export { NotesController };
