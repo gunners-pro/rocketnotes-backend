@@ -42,6 +42,21 @@ class NotesController {
 
     response.json();
   }
+
+  async show(request: Request, response: Response) {
+    const { id } = request.params;
+
+    const note = await database<Note>('notes')
+      .where({ id: Number(id) })
+      .first();
+
+    const tags = await database('tags').where({ note_id: id }).orderBy('name');
+    const links = await database('links')
+      .where({ note_id: id })
+      .orderBy('created_at');
+
+    return response.json({ ...note, tags, links });
+  }
 }
 
 export { NotesController };
