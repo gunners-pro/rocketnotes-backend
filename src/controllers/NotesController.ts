@@ -57,6 +57,14 @@ class NotesController {
 
     return response.json({ ...note, tags, links });
   }
+
+  async delete(request: Request, response: Response) {
+    const { id } = request.params;
+
+    await database('notes').where({ id }).delete();
+
+    return response.json();
+  }
 }
 
 export { NotesController };

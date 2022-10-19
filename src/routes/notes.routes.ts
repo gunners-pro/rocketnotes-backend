@@ -4,8 +4,9 @@ import { NotesController } from '../controllers/NotesController';
 
 const notesRoutes = Router();
 
-const usersController = new NotesController();
+const notesController = new NotesController();
 
-notesRoutes.post('/:user_id', usersController.create);
-notesRoutes.get('/:id', usersController.show);
+notesRoutes.post('/:user_id', notesController.create);
+notesRoutes.get('/:id', notesController.show);
+notesRoutes.delete('/:id', notesController.delete);
 export { notesRoutes };

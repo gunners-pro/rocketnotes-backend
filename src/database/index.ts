@@ -6,6 +6,9 @@ export const database = knex({
   connection: {
     filename: path.resolve(__dirname, 'database.sqlite'),
   },
+  pool: {
+    afterCreate: (conn, cb) => conn.run('PRAGMA foreign_keys = ON', cb),
+  },
   migrations: {
     directory: path.resolve(__dirname, 'migrations'),
     extension: 'ts',
