@@ -13,7 +13,7 @@ interface INote {
 class NotesController {
   async create(request: Request, response: Response) {
     const { title, description, tags, links } = request.body as INote;
-    const { user_id } = request.params;
+    const { id: user_id } = request.user;
 
     const note_id = await database<Note>('notes').insert({
       title,
@@ -67,7 +67,8 @@ class NotesController {
   }
 
   async index(request: Request, response: Response) {
-    const { user_id, title, tags } = request.query;
+    const { title, tags } = request.query;
+    const { id: user_id } = request.user;
     let notes;
 
     if (tags) {

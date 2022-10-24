@@ -4,7 +4,7 @@ import { database } from '../database';
 
 class TagsController {
   async index(request: Request, response: Response) {
-    const { user_id } = request.params;
+    const { id: user_id } = request.user;
 
     const tags = await database('tags').where({ user_id });
 

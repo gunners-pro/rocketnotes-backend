@@ -31,7 +31,7 @@ class UsersController {
 
   async update(request: Request, response: Response) {
     const { name, email, password, old_password } = request.body;
-    const { id } = request.params;
+    const { id } = request.user;
 
     const user = await database<User>('users')
       .select('*')
