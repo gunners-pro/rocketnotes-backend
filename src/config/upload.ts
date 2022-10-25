@@ -3,7 +3,7 @@ import multer, { Options } from 'multer';
 import path from 'path';
 
 const tmp_folder = path.resolve(__dirname, '..', '..', 'tmp');
-const upload_folder = path.resolve(__dirname, 'uploads');
+const upload_folder = path.resolve(tmp_folder, 'uploads');
 
 const configMulter: Options = {
   storage: multer.diskStorage({
