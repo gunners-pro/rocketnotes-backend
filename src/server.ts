@@ -1,12 +1,16 @@
 import 'express-async-errors';
 import express, { NextFunction, Request, Response } from 'express';
 
+import { upload_folder } from './config/upload';
 import { routes } from './routes';
 import { AppError } from './utils/AppError';
 
 const app = express();
 
 app.use(express.json());
+
+app.use('/files', express.static(upload_folder));
+
 app.use(routes);
 
 app.use(
